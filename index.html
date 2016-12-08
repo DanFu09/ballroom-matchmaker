@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Ballroom Matchmaker</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="one-half column" style="margin-top: 25%">
+        <h3>Ballroom Matchmaker</h3>
+        <p>Do you have a fresh crop of rookies that need to be matched up for the first comp? Well look no further than the ballroom matchmaker, where we make partnerships that last for life.</p>
+        <form>
+          <p>Just drop the .csv file into the file input.
+          <input type="file" id="dancerdata">
+          </p>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div id="results">Hi</div>
+    </div>
+  </div>
+
+  <!-- Script
+  __________________________________________________ -->
+  <script src="matcher.js" > </script>
+  <script type="text/javascript">
+    // Check for the various File API support.
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      // Great success! All the File APIs are supported.
+    } else {
+      alert('The File APIs are not fully supported in this browser.');
+    }
+
+    function parsestr(str) {
+      var tokens = str.split(',');
+      var output = [];
+      for (var i = 0; i < tokens.length; i++) {
+        output.push("<li>" + tokens[i] + "</li>");
+      }
+      document.getElementById('results').innerHTML = "<ul>" + output.join('') + "</ul>";
+      match_maker(str);
+    }
+
+    function handleFileUpload(event) {
+      var f = event.target.files[0];
+      alert(f.name);
+
+      var reader = new FileReader();
+      reader.onload=(function(thefile) {
+        return function (e) {
+          var problem = parsestr(e.target.result);
+        }
+      })(f);
+      reader.readAsText(f);
+    }
+
+    document.getElementById('dancerdata').addEventListener('change', handleFileUpload);
+  </script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
