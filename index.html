@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="row">
-      <div id="results">Hi</div>
+      <div id="results"></div>
     </div>
   </div>
 
@@ -65,13 +65,13 @@
       for (var i = 0; i < tokens.length; i++) {
         output.push("<li>" + tokens[i] + "</li>");
       }
-      document.getElementById('results').innerHTML = "<ul>" + output.join('') + "</ul>";
+      document.getElementById('results').innerHTML = "<ol>" + output.join('') + "</ol>";
       match_maker(str);
     }
 
     function handleFileUpload(event) {
       var f = event.target.files[0];
-      alert(f.name);
+      //alert(f.name);
 
       var reader = new FileReader();
       reader.onload=(function(thefile) {
