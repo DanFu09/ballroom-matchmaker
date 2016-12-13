@@ -2,31 +2,69 @@
 ### CSV Specifications
 
 + Line 1: |D|, D
-  + The number of dances D, followed by a comma separated list of dance name, followed
-   by its height sensitivity (1/0).
+  + Semi-colon separated: the number of dances D, followed by a list of dance 
+   name, followed by its height sensitivity (1/0).
     
 + Line 2: |P|
   + The number of people P in the system
     
-+ Lines 3-3+2|P|:
-  + First line: *P*. Name, Height (integer in inches), Nonballroom dance experience
- (integer in years), lesson attendance (integer in lessons/week), weekly practice
- time (hours), past ballroom experience (1/0), number of dances to participate
- (integer *=|P.R|*).
-  + Second line: *P.R*. There will be 3*|P.R| values in this line with dance (0-based
-  index of dance as given in line 1), lead/follow/both (0,1,2 respectively), and
-  partner name (or TBA if none given)
++ Lines 3 to 3+|P|:
+  + Tab separated list of name, e-mail, height (in inches), comma-separated list
+of dances they want to dance, lead/follow/both preference (one for all dances),
+time spent dancing (integer in hours/week), lessons attended, ballroom experience (years), non-ballroom
+experience (years), comma-separated list of people they don't
+want to dance with, and then comma-separated lists of people they do want to
+dance with for each dance (in the order given in line one)
 
 ### Example
 ```
-4, smooth, 1, standard, 1, latin, 0, rhythm, 0
-4
-Kevin Fei, 70, 0, 4, 5, 0, 3
-0, 0, TBA, 1, 0, Alaina Richert, 2, 0, Laura Aravena
-Alaina Richert, 68, 0, 4, 8, 0, 3
-1, 1, Kevin Fei, 2, 2, TBA, 3, 1, Laura Aravena
-Laura Aravena, 66, 4, 4, 10, 0, 4
-0, 1, Dank Memes, 1, 2, TBA, 3, 0, Alaina Richert, 2, 1, Dank Memes
-Dank Memes, 62, 1, 3, 4, 0, 4
-0, 2, TBA, 1, 2, TBA, 2, 2, TBA, 3,2, TBA
+4;smooth;1;standard;1;latin;0;rhythm;0;
+4;
+Kevin Fei;kevinfei@email;70;smooth,standard,rhythm;lead;3;10;0;1;Laura Aravena;Alaina Richert;Alaina Richert;;Alaina Richert;
+Alaina Richert;alainaemail@com;68;smooth,standard,rhythm;follow;5;5;0;0;;Kevin Fei;Kevin Fei;;Dank Memes;
+Laura Aravena;laura@laura.com;66;smooth,standard,latin,rhythm;follow;4;10;0;4;Kevin Fei;Dank Memes;Dank Memes;Dank Memes;;
+Dank Memes;haha@rnc.com;62;latin,rhythm;lead;2;7;0;0;;;;Laura Aravena;Alaina Richert
 ```
+
+{
+    Kevin Fei: {
+        height: 9
+        experience: 
+        blah: blah
+        preferences: {
+            smooth: [Alaina, Laura, My Mom],
+            ...
+            none: [my dad]
+        }
+    }
+}
+
+matching dictionary:
+
+{
+    latin: [[0, 2], [4, 3], ... [5,-1]]
+    standard: []
+    rhythm:
+    smooth:
+}
+
+-1 is TBA
+
+var sample_matching = {
+      latin: [[0, 2], [4, 3], [5,-1]],
+      standard: [[1, 2], [3, 4]]
+    };
+var sample_names = ["latin", "standard"];
+matching_score(sample_matching, sample_names);
+
+scores:
+everyone has a partner: if person A is matched with TBA, cost is 1000 / (# of non-TBA partners)
+everyone has a different partner: for every partnership, cost is 50 * (# of dances they dance together - 1)
+    Effectively this means that for a partner, it is equal to 50 * (# of dances they dance with partner)^2
+leader/follow preference: cost is 50 * (# of dances with opposite preference)
+    Effectively this means that for a partner, it is equal to 50 * (# of dances they dance in the opp role)^2
+Partner Lead/follow preference: cost is 10 * (# of dances with partner opposite preference) * (# of dances / # of their dances)
+    
+height difference: 0 if leader is between 2-7 inches taller than the follower for height sensitive; -10 if leader is 4 inches taller than follower
+Partner Preferences: -30 if matched correctly (two ways)! +50 if someone is matched with someone they dislike
+dedication/past experience: -2 if everything is matched correctly

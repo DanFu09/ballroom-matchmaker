@@ -60,15 +60,16 @@
     }
 
     function parsestr(str) {
-      var tokens = str.split(',');
-      var output = [];
-      for (var i = 0; i < tokens.length; i++) {
-        output.push("<li>" + tokens[i] + "</li>");
-      }
-      document.getElementById('results').innerHTML = "<ol>" + output.join('') + "</ol>";
-      match_maker(str);
+      var tokens = str.replace(/(\r\n|\n|\r|)/gm,"").replace(/ /g,'').split(';');
+      process_input(str);
+      var matching = local_search(10000);
+      console.log(stringify_partner_assignments(matching));
+      console.log(matching_score(matching));
+      
+      var uriContent = "data:application/octet-stream," + encodeURIComponent(scores_over_time);
+      document.getElementById('results').innerHTML = "<a href = \"" + uriContent + "\"> Scores over time</a>";
     }
-
+    
     function handleFileUpload(event) {
       var f = event.target.files[0];
       //alert(f.name);
@@ -83,6 +84,7 @@
     }
 
     document.getElementById('dancerdata').addEventListener('change', handleFileUpload);
+    
   </script>
 
 <!-- End Document
