@@ -1,3 +1,4 @@
+//Check if this field is a number, if not throw an error
 function verify_num(numstr, pos) {
 	if (!isNaN(parseInt(numstr))) {
 		return parseInt(numstr);
@@ -7,6 +8,7 @@ function verify_num(numstr, pos) {
 	}
 }
 
+//Trim the spaces in each entry in an array of strings
 function trim_spaces(array_of_str) {
 	if (array_of_str) {
 		for (var i = 0; i < array_of_str.length; i++) {
@@ -20,6 +22,7 @@ var dance_hsens = [], dance_names = [];
 var dancers = {};
 var d, n;
 
+// Process the tokenized tsv
 function process_input(str) {
 	//No more newlines
 	var tokens = str.replace(/(\r\n|\n|\r)/gm,"").split('\t');
