@@ -65,6 +65,6 @@ leader/follow preference: cost is 50 * (# of dances with opposite preference)
     Effectively this means that for a partner, it is equal to 50 * (# of dances they dance in the opp role)^2
 Partner Lead/follow preference: cost is 10 * (# of dances with partner opposite preference) * (# of dances / # of their dances)
     
-height difference: 0 if leader is between 2-7 inches taller than the follower for height sensitive; -10 if leader is 4 inches taller than follower
+height difference: For height sensitive dances; -10 if leader is 4-5 inches, 0 if 2-7 inches, +10 if leader is outside that range
 Partner Preferences: -30 if matched correctly (two ways)! +50 if someone is matched with someone they dislike
 dedication/past experience: -2 if everything is matched correctly
