@@ -37,8 +37,8 @@
         <h3>Ballroom Matchmaker</h3>
         <p>Do you have a fresh crop of rookies that need to be matched up for the first comp? Well look no further than the ballroom matchmaker, where we make partnerships that last for life.</p>
         <form>
-          <p>Just drop the .csv file into the file input.
-          <input type="file" id="dancerdata">
+          <p>Just drop the .tsv file into the file input.
+          <input type="file" class="button-primary" id="dancerdata">
           </p>
         </form>
       </div>
@@ -59,15 +59,24 @@
       alert('The File APIs are not fully supported in this browser.');
     }
 
+    function uriContent(content_string) {
+      return "data:application/octet-stream," + encodeURIComponent(content_string);
+    }
+
+    var output_element = document.getElementById('results');
     function parsestr(str) {
       var tokens = str.replace(/(\r\n|\n|\r|)/gm,"").replace(/ /g,'').split(';');
+      
       process_input(str);
+      var t0 = performance.now();
       var matching = local_search(10000);
+      var t1 = performance.now();
       console.log(stringify_partner_assignments(matching));
       console.log(matching_score(matching));
       
-      var uriContent = "data:application/octet-stream," + encodeURIComponent(scores_over_time);
-      document.getElementById('results').innerHTML = "<a href = \"" + uriContent + "\"> Scores over time</a>";
+      output_element.innerHTML += "Result calculated in " + ((t1-t0)/1000).toString() + " seconds.<br>"
+      output_element.innerHTML += "<a href = \"" + uriContent(stringify_partner_assignments(matching)) + "\"> Matching data</a><br>";
+      output_element.innerHTML += "<a href = \"" + uriContent(scores_over_time) + "\"> Costs over time</a>";
     }
     
     function handleFileUpload(event) {
