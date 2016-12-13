@@ -22,9 +22,8 @@ var d, n;
 
 function process_input(str) {
 	//No more newlines
-	var tokens = str.replace(/(\r\n|\n|\r)/gm,"").split(';');
+	var tokens = str.replace(/(\r\n|\n|\r)/gm,"").split('\t');
 	//alert(tokens.length);
-	tokens.pop(); //Remove last element
 	//console.log(tokens);
 
 	var phase = 0, ctr = 0;
